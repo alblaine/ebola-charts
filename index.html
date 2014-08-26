@@ -4,7 +4,6 @@
 <head>
     <title>Ebola Charts</title>
    <meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
-    <link href="css/bootstrap.min.css" rel="stylesheet"> 
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script src="http://code.highcharts.com/highcharts.js"></script>
     <script src="http://code.highcharts.com/modules/exporting.js"></script>
@@ -43,7 +42,7 @@
           success: parseData
         });
       }
-      //end load(xml)
+      //end load(json)
      
     
      
@@ -57,7 +56,7 @@
             for (var i = 0, len = dataObj.length; i < len; ++i) {
                 
                 var aDay = dataObj[i];
-                date = dataObj[i].Date;
+                date = aDay.Date;
                 cases = aDay["1. Total new cases"];
                 suspected = aDay["2. New suspected cases"];
                 probable = aDay["3. New probable cases"];
@@ -81,7 +80,6 @@
      
         
     function writeChart() {
-
    
      $('#container').highcharts
         var chart = new Highcharts.Chart({
@@ -158,17 +156,150 @@
              ]
         
         
-        });
-                
-                
-                
-                
-                
+        });    
                 
             }
 </script>
 
-<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+<script type = "text/javascript">
+    
+  var dateContacts = "";
+  var newContacts = "";
+  var completedContacts = "";
+  var lostContacts = ""; 
+  var newContactsArray = [];
+  var completedContactsArray =[];
+  var lostContactsArray = [];
+  var dateContactsArray = []; 
+  
+   // load information for contacts data  
+   
+     $(document).ready(function() {
+        
+        loadContactData();
+      
+      });
+
+    function loadContactData(){
+        $.ajax({
+          type:"GET",
+          url:"contacts_all.json",
+          dataType:"text",
+          success: parseContacts
+        });
+      }
+
+   // parse contacts data
+   
+    function parseContacts(data){
+        
+        dataObjContacts = $.parseJSON(data);                          
+          
+          for (var i = 0, len = dataObjContacts.length; i < len; ++i) {
+                
+                var contacts = dataObjContacts[i];
+                console.log(contacts);
+                
+                dateContacts = contacts.Date;
+                newContacts = contacts["New contacts"];
+                completedContacts = contacts["Contacts completed observation"];
+                lostContacts = contacts["Contacts lost follow up"];
+                
+                dateContactsArray.push(dateContacts); 
+                newContactsArray.push(newContacts);
+                completedContactsArray.push(completedContacts);
+                lostContactsArray.push(lostContacts);
+                
+            }
+          
+        console.log(dateContactsArray); 
+        console.log(newContactsArray);
+        console.log(completedContactsArray);
+        console.log(lostContactsArray); 
+
+    writeContactsChart();
+    }
+    
+  function writeContactsChart() {
+   
+     $('#container2').highcharts
+        var chart = new Highcharts.Chart({
+        chart: {
+          type: 'line',
+          renderTo: 'container2'
+        },
+        title: {
+                text: 'Contacts, By Day',
+               
+            },
+
+         xAxis: {
+                categories: dateContactsArray,
+                title: {
+                    text: null
+                }
+            },
+         yAxis: {
+                min: 0,
+                title:
+                    {
+                        text:'Contacts'
+                    },
+                    
+                labels: {
+                    
+                    overflow: 'justify'
+                }
+            },
+            plotOptions: {
+                 groupPadding: 0.1,
+                 spline: {
+                    dataLabels: {
+                        enabled: false
+                    }
+                }
+            },
+        
+            credits: {
+                enabled: false
+            },
+         tooltip: {
+            formatter: function () {
+                return '<b>' + this.x + '</b><br/>' +
+                    this.series.name + ': ' + this.y + '<br/>'
+            }
+        },
+        series: [{
+                
+                    name: 'Total New Contacts',
+                    data: newContactsArray,
+                    
+    
+            },
+            {
+                    name: 'Completed Contacts',
+                    data: completedContactsArray,
+                
+        
+             },
+             {
+                    name: 'Lost Contacts',
+                    data: lostContactsArray, 
+             }
+             
+             ]
+        
+        
+        });    
+                
+            }
+
+</script>
+
+
+
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div><br><br>
+<div id="container2" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
 
 </body>
 </html>
