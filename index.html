@@ -246,6 +246,7 @@
                         text:'Contacts'
                     },
                     
+                    
                 labels: {
                     
                     overflow: 'justify'
@@ -277,7 +278,7 @@
     
             },
             {
-                    name: 'Completed Contacts',
+                    name: 'Completed Observations',
                     data: completedContactsArray,
                 
         
@@ -381,10 +382,12 @@
           renderTo: 'container3'
         },
         title: {
-                text: 'Percentage of Contacts By Day in Relation to the Grand Total',
+                text: 'Percentage of Contacts By Day in Relation to Totals',
                
             },
-
+        subtitle: {
+                text: "Total New Contacts: " + newContactsTotal + "<br/>Total Observations Completed: " + completedContactsTotal + "<br/>Total Lost Contacts: " + lostContactsTotal,
+            }, 
          xAxis: {
                 categories: dateContactsArray,
                
@@ -397,7 +400,7 @@
                 min: 0,
                 title:
                     {
-                        text:'Proportion of Contacts'
+                        text:'Percentage'
                     },
                     
                 labels: {
@@ -426,19 +429,19 @@
         },
         series: [{
                 
-                    name: 'Proportion of New Contacts',
+                    name: 'Percentage of New Contacts',
                     data: xArray,
                     
     
             },
             {
-                    name: 'Proportion of Completed Contacts',
+                    name: 'Percentage of Completed Observations',
                     data: yArray,
                 
         
              },
              {
-                    name: 'Proportion of Lost Contacts',
+                    name: 'Percentage of Lost Contacts',
                     data: zArray, 
              }
              
