@@ -25,7 +25,13 @@
     var probable = "";
     var confirmed = "";
     var dataObj =""; 
-
+  var grandTotal = ""; 
+  var completedContactsTotal = "";
+  var lostContactsTotal = ""; 
+  var newContactsTotal = "";
+  var xArray = [];
+  var yArray = [];
+  var zArray = []; 
     
     $(document).ready(function() {
         
@@ -292,28 +298,16 @@
         
         
         });    
-                
+              
+              
+                loadTotalsData();  
             }
 
-</script>
-<script type = "text/javascript">
-    
-  var grandTotal = ""; 
-  var completedContactsTotal = "";
-  var lostContactsTotal = ""; 
-  var newContactsTotal = "";
-  var xArray = [];
-  var yArray = [];
-  var zArray = []; 
+
  
    // load information for contacts data  
    
-     $(document).ready(function() {
-        
-        loadTotalsData();
-      
-      });
-
+    
     function loadTotalsData(){
         $.ajax({
           type:"GET",
